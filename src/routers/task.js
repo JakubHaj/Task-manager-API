@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 
 router.post('/tasks', auth, async (req, res) => {
     const task = new Task({
-        ...req.body, // copy all the req.body properties to new Task object
+        ...req.body, 
         owner: req.user._id
     });
 
@@ -17,9 +17,6 @@ router.post('/tasks', auth, async (req, res) => {
     };
 });
 
-//?completed=true
-//?limit=10&skip=0
-//?sortBy=createdAt_asc
 router.get('/tasks', auth, async (req, res) => {
     const match = {};
     const sort = [];
@@ -43,7 +40,7 @@ router.get('/tasks', auth, async (req, res) => {
                 skip: parseInt(req.query.skip),
                 sort
             }
-        }).execPopulate(); // ===  await Task.find({ owner: req.user._id});
+        }).execPopulate(); 
         res.send(req.user.tasks);
     } catch (error) {
         res.status(500).send(error);
@@ -52,8 +49,6 @@ router.get('/tasks', auth, async (req, res) => {
 
 router.get('/tasks/:id', auth, async (req, res) => {
     try {
-        // const task = await Task.findById(req.params.id);
-        
         const task = await Task.findOne({   _id: req.params.id, owner: req.user._id})
         
         if (!task) {
@@ -74,8 +69,6 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     });
     
     try {
-       //const task = await Task.findByIdAndUpdate(req.params.id, req.body,{ new: true, runValidators: true});
-
         const task = await Task.findOne( { _id: req.params.id, owner: req.user._id});
         if (!isValidOperation) {
             return res.status(400).send('Wrong update!');       

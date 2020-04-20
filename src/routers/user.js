@@ -72,9 +72,6 @@ router.get('/users/me', auth, async (req, res) => {
 router.patch('/users/me', auth, async (req, res) => {
         const allowedUpdates = ['name', 'age', 'email', 'password'];
         const updates = Object.keys(req.body);
-        // User.schema.eachPath((path) => {
-        //     allowedUpdates.push(path);
-        // });
         const isValidOperation = updates.every((update) => {
             return allowedUpdates.includes(update);
         });
@@ -84,9 +81,6 @@ router.patch('/users/me', auth, async (req, res) => {
         }
     
     try {
-        //const user = await User.findByIdAndUpdate(req.params.id, req.body,{ new: true, runValidators: true});
-        //const user = await User.findById(req.params.id);
-
         updates.forEach((update) => {
             req.user[update] = req.body[update];
         });
@@ -123,7 +117,6 @@ const upload = multer({
 });
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-    //console.log(req.file.buffer);
     const buffer = await sharp(req.file.buffer).resize({    width: 250, height: 250}).png().toBuffer();
     req.user.avatar = buffer;
     await req.user.save();

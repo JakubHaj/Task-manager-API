@@ -24,8 +24,3 @@ module.exports = {
     sendWelcomeEmail,
     sendCancelationEmail
 };
-/*
-echo "export SENDGRID_API_KEY='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'" > sendgrid.env
-echo "sendgrid.env" >> .gitignore
-source ./sendgrid.env
-*/
